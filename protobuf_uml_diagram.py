@@ -179,7 +179,7 @@ class Diagram:
 
     _proto_module: ModuleType = None
     _rendered_filename: str = None
-    _file_format = "png"
+    _file_format = "svg"
 
     def from_file(self, proto_file: str):
         if not proto_file:
