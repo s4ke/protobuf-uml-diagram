@@ -23,6 +23,7 @@ from pathlib import Path
 from string import Template
 from types import ModuleType
 from typing import List, Tuple, Union
+from graphviz2drawio import graphviz2drawio
 
 import click
 from google.protobuf.descriptor import Descriptor, FieldDescriptor
@@ -223,6 +224,12 @@ class Diagram:
         logger.info(
             f"Writing diagram to {self._rendered_filename}.{self._file_format}")
         src.render(filename=self._rendered_filename, view=False, cleanup=True)
+
+        xml = graphviz2drawio.convert(uml_template)
+        xml = xml.replace('style="ellipse;', 'style="')
+        with open(f'{self._rendered_filename}.drawio', 'w') as xml_file:
+            xml_file.write(xml)
+
 
 
 # -- main method

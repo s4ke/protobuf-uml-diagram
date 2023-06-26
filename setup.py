@@ -28,7 +28,8 @@ def read(*parts):
 install_requires = [
     "click>=7.1,<8.2",
     "graphviz>=0.14,<0.21",
-    "protobuf>=3.13,<4.24"
+    "protobuf>=3.13,<4.24",
+    "graphviz2drawio @ git+ssh://git@github.com:s4ke/graphviz2drawio.git"
 ]
 
 setup_requires = [
