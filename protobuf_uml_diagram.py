@@ -76,7 +76,8 @@ def _process_module(proto_module: ModuleType) -> Tuple[List[str], List[str]]:
     classes = []
     relationships = []
     for type_name, type_descriptor in proto_module.DESCRIPTOR.message_types_by_name.items():
-        _process_descriptor(type_descriptor, classes, relationships)
+        if not type_name.startswith('google.protobuf'):
+            _process_descriptor(type_descriptor, classes, relationships)
     return classes, relationships
 
 
@@ -100,9 +101,11 @@ def _process_descriptor(descriptor: Descriptor, classes: list,
             # is it a repeated field?
             label = LABELS_BY_NUMBER[_field.label]
             if label == 'repeated':
-                relationships.append(f"    \"{that_node}\"->\"{this_node}\" [dir=backward;arrowhead=odiamond,arrowtail=normal;headlabel=\"1\";taillabel=\"0..*\"]")
+                if not this_node.startswith('google.protobuf') and not that_node.startswith('google.protobuf'):
+                    relationships.append(f"    \"{that_node}\"->\"{this_node}\" [dir=backward;arrowhead=odiamond,arrowtail=normal;headlabel=\"1\";taillabel=\"0..*\"]")
             else:
-                relationships.append(f"    \"{this_node}\"->\"{that_node}\" [arrowhead=none;headlabel=\"1\";taillabel=\"1\"]")
+                if not this_node.startswith('google.protobuf') and not that_node.startswith('google.protobuf'):
+                    relationships.append(f"    \"{this_node}\"->\"{that_node}\" [arrowhead=none;headlabel=\"1\";taillabel=\"1\"]")
 
             field_type = that_node  # so we replace the 'message' token by the actual name
         else:
