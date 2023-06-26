@@ -24,6 +24,7 @@ from string import Template
 from types import ModuleType
 from typing import List, Tuple, Union
 from graphviz2drawio import graphviz2drawio
+import re
 
 import click
 from google.protobuf.descriptor import Descriptor, FieldDescriptor
@@ -227,6 +228,8 @@ class Diagram:
 
         xml = graphviz2drawio.convert(uml_template)
         xml = xml.replace('style="ellipse;', 'style="')
+        xml = xml.replace('font-family:Bitstream Vera Sans', 'font-family:Helvetica')
+        #xml = re.sub(r'font-size:[0-9\.]+px', 'font-size:12pt', xml)
         with open(f'{self._rendered_filename}.drawio', 'w') as xml_file:
             xml_file.write(xml)
 
